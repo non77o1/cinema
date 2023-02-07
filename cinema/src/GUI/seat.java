@@ -6,6 +6,13 @@ package GUI;
 import clas.*;
 
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -16,6 +23,7 @@ public class seat extends javax.swing.JFrame {
     /**
      * Creates new form seat
      */
+    String []seat;
     int id_customer;
     movieName movie;
     double CD_Seat=15;
@@ -26,8 +34,28 @@ public class seat extends javax.swing.JFrame {
     }
     public seat(int id ,movieName movie) {
         initComponents();
+
         this.id_customer=id;
         this.movie=movie;
+
+        int num=0;
+        for (int i=0 ; i<20 ; i++){
+            if (getingSeats()[i]!=null){
+                num+=1;
+            }
+        }
+        if (num!=0){
+            seat = new String[num];
+            for (int i=0 ; i<num ; i++){
+                if (getingSeats()[i]!=null) {
+                    seat[i] = getingSeats()[i];
+                }
+            }
+        }
+        System.out.println(Arrays.toString(seat));
+        Disaple();
+
+//        A1_seat.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,7 +96,7 @@ public class seat extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/cinema-screen (1).png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("cinema/icon/cinema-screen (1).png")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -328,9 +356,11 @@ public class seat extends javax.swing.JFrame {
     private void Next_jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         selectedSeat();
         addSeat();
-        if(SeatPrise>0 && id_customer!=0&& seats!=null){
+        System.out.println(seats);
+        System.out.println(id_customer);
+        System.out.println(SeatPrise);
+        if(SeatPrise>0 && id_customer!=0 && seats!=null){
             movie.setSeats(seats);
-            System.out.println(seats);
             dispose();
             Snack d = new Snack(id_customer,movie,SeatPrise);
             d.setTitle("Snak");
@@ -460,6 +490,93 @@ public class seat extends javax.swing.JFrame {
             }
         }
     }
+
+    public String [] getingSeats(){
+        String [] getingSeats =null;
+        ResultSet resultSet=null;
+        DB n= new DB();
+        Connection dbconn =n.connectDB();
+        PreparedStatement getMovie =null;
+        try {
+            getMovie = (PreparedStatement) dbconn.prepareStatement("SELECT * FROM seat where movie_id=? and time=?");
+            getMovie.setInt(1,movie.getItem_id());
+            getMovie.setString(2,movie.getTimes());
+            resultSet= getMovie.executeQuery();
+            getingSeats =new String[50];
+            int i=0;
+            while (resultSet.next()){
+                getingSeats[i]=resultSet.getString("seat");
+                i+=1;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+                dbconn.close();
+                getMovie.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return getingSeats;
+    }
+
+    void Disaple(){
+        if (seat!=null){
+            for (int i = 0; i < seat.length; i++) {
+                if (A1_seat.getText().equals(seat[i])) {
+                    A1_seat.setEnabled(false);
+                    A1_seat.setToolTipText("Seat Booked");
+                }
+
+                if (A2_seat.getText().equals(seat[i])) {
+                    A2_seat.setEnabled(false);
+                    A2_seat.setToolTipText("Seat Booked");
+                }
+
+                if (A3_seat.getText().equals(seat[i])) {
+                    A3_seat.setEnabled(false);
+                    A3_seat.setToolTipText("Seat Booked");
+                }
+
+                if (A4_seat.getText().equals(seat[i])) {
+                    A4_seat.setToolTipText("Seat Booked");
+                    A4_seat.setEnabled(false);
+
+                }
+
+                if (A5_seat.getText().equals(seat[i])) {
+                    A5_seat.setToolTipText("Seat Booked");
+                    A5_seat.setEnabled(false);
+
+                }
+
+                if (C3_seat.getText().equals(seat[i])) {
+                    System.out.println("entered");
+                    C3_seat.setToolTipText("Seat Booked");
+                    C3_seat.setEnabled(false);
+
+                }
+                if (C4_seat.getText().equals(seat[i])) {
+                    System.out.println("entered");
+                    C4_seat.setToolTipText("Seat Booked");
+                    C4_seat.setEnabled(false);
+
+                }
+                if (D4_seat.getText().equals(seat[i])) {
+                    System.out.println("entered");
+                    D4_seat.setToolTipText("Seat Booked");
+                    D4_seat.setEnabled(false);
+
+                }
+            }
+
+        }
+
+        }
+
     // Variables declaration - do not modify                     
     private javax.swing.JCheckBox A1_seat;
     private javax.swing.JCheckBox A2_seat;

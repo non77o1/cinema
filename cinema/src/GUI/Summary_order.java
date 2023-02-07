@@ -67,7 +67,7 @@ public class Summary_order extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/return.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("cinema/icon/return.png")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
@@ -191,26 +191,29 @@ public class Summary_order extends javax.swing.JFrame {
 
         try {
             //select all order
-            PreparedStatement order_record = dbconn.prepareStatement("SELECT * FROM order_record");
+            PreparedStatement order_record = dbconn.prepareStatement("SELECT * FROM cinema.order_record;");
             ResultSet order1 = order_record.executeQuery();
-
             while (order1.next()) {
                 try {
-
                     PreparedStatement  payInfo=dbconn.prepareStatement("SELECT * FROM cash where Payment_id=?");
                     payInfo.setInt(1,order1.getInt("pay_id"));
                     ResultSet  cash=payInfo.executeQuery();
                     if (cash.next()){
                         order = new Order();
                         order.setId(order1.getInt("order_id"));
+                        System.out.println("the fr:"+order.getId());
                         payment= new cash(cash.getInt("Payment_id"),cash.getDouble("Order_Total_price"),cash.getString("currency"));
                         num_item=cash.getInt("num_items");
                         cash.close();
                     }
+
                     payInfo=dbconn.prepareStatement("SELECT * FROM card where Payment_id=?");
                     payInfo.setInt(1,order1.getInt("pay_id"));
                     ResultSet  card=payInfo.executeQuery();
                     if (card.next()){
+                        order = new Order();
+                        order.setId(order1.getInt("order_id"));
+                        System.out.println("the fr:"+order.getId());
                         payment= new card();
                         payment.setPay_id(card.getInt("Payment_id"));
                         payment.setTotal_price(card.getDouble("Order_Total_price"));
@@ -241,7 +244,8 @@ public class Summary_order extends javax.swing.JFrame {
 
 
 
-                    if (order!=null && payment!=null && customer!=null && num_item!=0 && movie!=null) {
+                    if (order!=null && payment!=null && customer!=null  && movie!=null) {
+                        System.out.println("the sc:"+order.getId());
                         summary.add(new order_record(order, payment, customer, num_item,movie));
                     }
                     payInfo.close();

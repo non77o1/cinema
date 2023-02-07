@@ -70,7 +70,7 @@ int id;
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/candies.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("cinema/icon/candies.png")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -257,23 +257,28 @@ int id;
         } else {
             name.trim();
             if (price.matches("[0.0-9.0]+")) {
-                if (name.matches("[a-zA-Z_]+")) {
-                    Add_Snack(name, price);
-                    int i=0;
-                    if (getAllItems()!=null){
-                        listSnack =new String[50];
-                        for (Items b: getAllItems()){
-                            if (i!=50){
-                                listSnack[i]=b.toString();
-                                i++;
+                double price1=Double.valueOf(price);
+              if (price1>0) {
+                    if (name.matches("[a-zA-Z_]+")) {
+                        Add_Snack(name, price1);
+                        int i = 0;
+                        if (getAllItems() != null) {
+                            listSnack = new String[50];
+                            for (Items b : getAllItems()) {
+                                if (i != 50) {
+                                    listSnack[i] = b.toString();
+                                    i++;
+                                }
                             }
+                            jList1.setModel(new DefaultComboBoxModel<>(listSnack));
                         }
-                        jList1.setModel(new DefaultComboBoxModel<>(listSnack));
-                    }
 
-                } else {
-                    JOptionPane.showMessageDialog(this, "Pleas Enter letters Only", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Pleas Enter letters Only", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }else {
+                  JOptionPane.showMessageDialog(this, "Pleas Enter number greater than zero at price filed", "Error", JOptionPane.ERROR_MESSAGE);
+              }
             } else {
                 JOptionPane.showMessageDialog(this, "Pleas Enter number at price filed", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -314,8 +319,7 @@ int id;
                 }
             });
         }
-    private void Add_Snack(String name, String price) {
-        double price1 =Double.parseDouble(price);
+    private void Add_Snack(String name, double price1) {
         DB n= new DB();
         Connection dbconn =n.connectDB();
         int last_id=0;

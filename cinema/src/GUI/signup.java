@@ -62,7 +62,7 @@ public class signup extends javax.swing.JFrame {
         hello_lable.setForeground(new java.awt.Color(255, 204, 102));
         hello_lable.setText("Hello to our Cinema App!!");
 
-        cinema_icon.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/cinema.png")); // NOI18N
+        cinema_icon.setIcon(new javax.swing.ImageIcon("cinema/icon/cinema.png")); // NOI18N
 
         username_field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

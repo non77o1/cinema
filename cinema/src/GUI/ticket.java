@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,10 +31,11 @@ movieName movie;
     public ticket() {
         initComponents();
     }
-
+int id;
     public ticket(int idCustomer, int numItems, Payment pay,int idOrder,movieName movie) {
         initComponents();
         this.movie=movie;
+        this.id=idCustomer;
         showCustomer_info(idCustomer);
         getAllCart(idOrder);
         jTextArea1.setEnabled(false);
@@ -63,7 +65,7 @@ movieName movie;
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setForeground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/tickets.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("cinema/icon/tickets.png")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Heiti TC", 2, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 204, 0));
@@ -131,9 +133,10 @@ movieName movie;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         dispose();
-        login d= new login();
-        d.setTitle("Dash Bord");
-        d.setVisible(true);    }
+        customerMenue d = new customerMenue(id);
+        d.setTitle("movie");
+        d.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -250,7 +253,7 @@ movieName movie;
                         "  Phone: " + customer.getPhone() + "\n" +
                         "  Movie Name: " + movie.getItem_name()+ "\n" +
                         "  Movie Time: " + movie.getTimes()+ "\n" +
-                        "  Movie Seats: " + movie.getSeats()+"\n" +
+                        "  Movie Seats: " + Arrays.toString(movie.getSeats()) +"\n" +
                         "  Number Of Items: " + num_items + "  Total Price: " + pay.getTotal_price() + "\n" +
                         "  Payment Way : Cash \n" ;
         }

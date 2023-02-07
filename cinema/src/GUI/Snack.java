@@ -175,7 +175,7 @@ public class Snack extends javax.swing.JFrame {
         customer_name.setForeground(new java.awt.Color(255, 204, 0));
         customer_name.setText("customear name");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/popcorn (1).png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon("cinema/icon/popcorn (1).png")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 153, 153));
@@ -419,8 +419,6 @@ public class Snack extends javax.swing.JFrame {
         }    }
 
     private void PrintTickatActionPerformed(java.awt.event.ActionEvent evt) {
-        if(cart1!=null) {
-
             if (CardRadio.isSelected() || cashradio.isSelected()){
                 card card = null;
                 cash cash=null;
@@ -482,10 +480,6 @@ public class Snack extends javax.swing.JFrame {
             }else {
                 JOptionPane.showMessageDialog(this, "select the payment way first", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        }else {
-            JOptionPane.showMessageDialog(this, "Add to cart first", "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     /**
@@ -633,8 +627,6 @@ public class Snack extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "item Added to cart!", "done!", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-
-
         }catch (SQLException e) {
 
             e.printStackTrace();
@@ -645,7 +637,6 @@ public class Snack extends javax.swing.JFrame {
 
                 e.printStackTrace();
             }
-
         }
     }
     public List<cartclass> getAllCart(){
@@ -771,6 +762,7 @@ public class Snack extends javax.swing.JFrame {
         DB n= new DB();
         Connection dbconn =n.connectDB();
         PreparedStatement inserToOrderRecord=null;
+        boolean send=false;
         try {
             inserToOrderRecord=dbconn.prepareStatement("insert into order_record(order_id,custemer_id,pay_id,order_date,movie_id) values (?,?,?,?,?)");
             inserToOrderRecord.setInt(1,id_order);
@@ -780,7 +772,24 @@ public class Snack extends javax.swing.JFrame {
             inserToOrderRecord.setInt(5,movie.getItem_id());
             int inser=inserToOrderRecord.executeUpdate();
             if (inser==1){
-                return true;
+                PreparedStatement inserSeat=null;
+                System.out.println("length of seates"+movie.getSeats().length);
+                int inser3=-1;
+                for (int i=0;i<movie.getSeats().length;i++){
+                    send=false;
+                     inserSeat=dbconn.prepareStatement("insert into seat(seat,movie_id,orderId,time) values (?,?,?,?)");
+                     inserSeat.setString(1,movie.getSeats()[i]);
+                     inserSeat.setInt(2,movie.getItem_id());
+                     inserSeat.setInt(3,id_order);
+                     inserSeat.setString(4,movie.getTimes());
+                     inser3=inserSeat.executeUpdate();
+                    if (inser3==1){
+                        send=true;
+                    }
+                }
+
+
+                return send;
             }
 
         }catch (SQLException e){

@@ -249,23 +249,26 @@ public class movieUpdate extends javax.swing.JFrame {
         } else {
             name.trim();
             if (price.matches("[0.0-9.0]+")) {
-                if (name.matches("[a-zA-Z_]+")) {
-                    Add_Snack(name, price,doration,Language,age);
-                    int i=0;
-                    if (getAllItems()!=null){
-                        listMovie =new String[50];
-                        for (Items b: getAllItems()){
-                            if (i!=50){
-                                listMovie[i]=b.toString();
-                                i++;
+                double price1 =Double.parseDouble(price);
+            if (price1>0){
+                    if (name.matches("[a-zA-Z_]+")) {
+                        Add_Snack(name, price1, doration, Language, age);
+                        int i = 0;
+                        if (getAllItems() != null) {
+                            listMovie = new String[50];
+                            for (Items b : getAllItems()) {
+                                if (i != 50) {
+                                    listMovie[i] = b.toString();
+                                    i++;
+                                }
                             }
+                            jList1.setModel(new DefaultComboBoxModel<>(listMovie));
                         }
-                        jList1.setModel(new DefaultComboBoxModel<>(listMovie));
-                    }
 
-                } else {
-                    JOptionPane.showMessageDialog(this, "Pleas Enter letters Only", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                    }
+                }else {
+                JOptionPane.showMessageDialog(this, "Pleas Enter number greater than zero at price filed", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             } else {
                 JOptionPane.showMessageDialog(this, "Pleas Enter number at price filed", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -309,7 +312,9 @@ public class movieUpdate extends javax.swing.JFrame {
         }
         else {
             JOptionPane.showMessageDialog(this, "select an items to be delete", "Error", JOptionPane.ERROR_MESSAGE);
-        }    }
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -415,8 +420,8 @@ public class movieUpdate extends javax.swing.JFrame {
     }
 
 
-    private void Add_Snack(String name, String price,String doration,String language,String age) {
-        double price1 =Double.parseDouble(price);
+    private void Add_Snack(String name, double price1,String doration,String language,String age) {
+
         DB n= new DB();
         Connection dbconn =n.connectDB();
         int last_id=0;

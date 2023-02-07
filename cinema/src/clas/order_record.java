@@ -8,6 +8,14 @@ public class order_record {
     Customer customer;
     int num_items;
 
+    public movieName getMovie() {
+        return movie;
+    }
+
+    public void setMovie(movieName movie) {
+        this.movie = movie;
+    }
+
     movieName movie;
 
     public order_record(Order order, Payment pay, Customer customer, int num_items,movieName movie) {
@@ -82,5 +90,9 @@ public class order_record {
           }
           return sym;
 
+    }
+
+    public String BookingDelt(){
+        return order.getId()+" "+movie.getItem_name() +" "+movie.getAge()+" "+movie.getLanguage()+" "+ pay.getTotal_price();
     }
 }

@@ -75,7 +75,7 @@ public class movie_info extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 204, 0));
         jLabel1.setText("Movie Information ");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/popcorn.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon("cinema/icon/popcorn.png")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));

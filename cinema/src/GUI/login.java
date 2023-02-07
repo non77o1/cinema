@@ -82,7 +82,7 @@ public class login extends javax.swing.JFrame {
             }
         });
 
-        cinema_icon.setIcon(new javax.swing.ImageIcon("/Users/hneen./IdeaProjects/cnema/icon/cinema.png")); // NOI18N
+        cinema_icon.setIcon(new javax.swing.ImageIcon("cinema/icon/cinema.png")); // NOI18N
 
         Sign_jButton.setBackground(new java.awt.Color(255, 204, 0));
         Sign_jButton.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
@@ -257,9 +257,10 @@ public class login extends javax.swing.JFrame {
             if(res.next()){
                 //display
                 showUser_info(uesername,password);
-                dispose();
+
                 if(id !=0) {
-                    movie d = new movie(id);
+                    dispose();
+                    customerMenue d = new customerMenue(id);
                     d.setTitle("movie");
                     d.setVisible(true);
                 }

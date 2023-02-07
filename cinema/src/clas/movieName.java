@@ -52,8 +52,8 @@ public class movieName extends Items{
         this.times = times;
     }
 
-    public String getSeats() {
-        return Arrays.toString(seats);
+    public String[] getSeats() {
+        return seats;
     }
 
     public void setSeats(String[] seats) {
@@ -63,7 +63,6 @@ public class movieName extends Items{
                 num+=1;
             }
         }
-
         if (num!=0){
             this.seats = new String[num];
             for (int i=0 ; i<num ; i++){
@@ -75,6 +74,6 @@ public class movieName extends Items{
     }
 
     public String toString(){
-        return super.getItem_name() +" "+super.getItem_prise()+" "+this.doration+" "+this.Language+" "+this.age;
+        return super.getItem_name()+" "+this.Language+" "+  this.age +" "+ this.doration+" "+super.getItem_prise()+ "RS";
     }
 }

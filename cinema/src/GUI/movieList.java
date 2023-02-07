@@ -4,6 +4,17 @@
  */
 package GUI;
 
+import clas.DB;
+import clas.movieName;
+
+import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author hneen.
@@ -16,6 +27,24 @@ public class movieList extends javax.swing.JFrame {
     public movieList() {
         initComponents();
     }
+    String [] listMovie;
+    int id;
+    public movieList(int id) {
+        initComponents();
+        this.id=id;
+        int i=0;
+        if (getAllItems()!=null){
+            listMovie =new String[50];
+            for (movieName b: getAllItems()){
+                if (i!=50){
+                    listMovie[i]=b.toString();
+                    i++;
+                }
+            }
+            jList1.setModel(new DefaultComboBoxModel<>(listMovie));
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,13 +147,67 @@ public class movieList extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void book_button1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-    }                                            
+    private void book_button1ActionPerformed(java.awt.event.ActionEvent evt) {
+        int select=-1;
+        select=jList1.getSelectedIndex();
+        if (select!=-1){
+            try {
+                movieName movie;
+                movie=getAllItems().get(select);
+                if (movie!=null){
+                    dispose();
+                    movie_info d= new movie_info(id,movie);
+                    d.setTitle("Dash Bord");
+                    d.setVisible(true);
+                }
 
-    private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(this, "reselect an movie to be Booked", "Error", JOptionPane.ERROR_MESSAGE);
+//                e.printStackTrace();
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "select an movie to be Booked", "Error", JOptionPane.ERROR_MESSAGE);
+        }      }
+
+    private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {
+        dispose();
+        customerMenue d= new customerMenue(id);
+        d.setTitle("Dash Bord");
+        d.setVisible(true);
+    }
+    public List<movieName> getAllItems(){
+        List<movieName> getingItems =null;
+        ResultSet resultSet=null;
+        DB n= new DB();
+        Connection dbconn =n.connectDB();
+        PreparedStatement getMovie =null;
+        try {
+            getMovie = (PreparedStatement) dbconn.prepareStatement("SELECT * FROM movie");
+            resultSet= getMovie.executeQuery();
+            getingItems =new ArrayList<movieName>();
+            while (resultSet.next()){
+                getingItems.add(new movieName(resultSet.getInt("movie_id"),
+                        resultSet.getString("movie_name"),
+                        resultSet.getDouble("movie_price"),
+                        resultSet.getString("doration"),
+                        resultSet.getString("Language"),
+                        resultSet.getString("age")));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+                dbconn.close();
+                getMovie.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return getingItems;
+    }
+
 
     /**
      * @param args the command line arguments
