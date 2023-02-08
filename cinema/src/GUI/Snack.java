@@ -787,8 +787,6 @@ public class Snack extends javax.swing.JFrame {
                         send=true;
                     }
                 }
-
-
                 return send;
             }
 

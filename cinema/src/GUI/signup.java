@@ -407,10 +407,13 @@ public class signup extends javax.swing.JFrame {
                 insert_id.setInt(1,id);
                 int res =insert_id.executeUpdate();
                 if (res==1){
-                    st = (PreparedStatement) dbconn.prepareStatement("insert into employee(Employee_id,Employee_name,Employee_phone) values (?,?,?)  ");
+                    long millis = System.currentTimeMillis();
+                    st = (PreparedStatement) dbconn.prepareStatement("insert into employee(Employee_id,Employee_name,Employee_phone,salary,payment_date) values (?,?,?,?,?) ");
                     st.setInt(1, id);
                     st.setString(2, name);
                     st.setString(3, phone);
+                    st.setDouble(4, 4400);
+                    st.setDate(5, new java.sql.Date(millis));
                     int res2 = st.executeUpdate();
                     if (res2 == 1) {
                         st1 = (PreparedStatement) dbconn.prepareStatement("insert into account(username ,password,person_id,rule) values (?,?,?,?)");
