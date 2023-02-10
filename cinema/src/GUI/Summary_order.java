@@ -44,7 +44,6 @@ public class Summary_order extends javax.swing.JFrame {
         Order_summary();
         PrintItOut();
         readFromFile();
-
     }
 
     /**
